@@ -1,4 +1,5 @@
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update})
+var pause = false
 
 function preload() {
   game.load.spritesheet('ground', 'assets/ground.png', 800, 64)
@@ -18,12 +19,18 @@ function create() {
 }
 
 function update() {
-  game.physics.arcade.collide(player.instance, level.groundGrp)
-  game.physics.arcade.collide(mobsService.mobs, level.groundGrp)
+  if(!pause) {
+    game.physics.arcade.collide(player.instance, level.groundGrp)
+    game.physics.arcade.collide(mobsService.mobs, level.groundGrp)
 
-  game.physics.arcade.collide(player.bullets, mobsService.mobs, destroy)
-  player.update()
-  level.update(game, 1)
+    game.physics.arcade.collide(player.bullets, mobsService.mobs, destroy)
+
+    game.physics.arcade.overlap(player.instance, mobsService.mobs, player.loose)
+
+    player.update()
+    level.update(game, 1)
+    mobsService.update(game, 1)
+  }
 }
 
 // Utility to destroy an object

@@ -31,4 +31,12 @@ var player = {
     bullet.events.onOutOfBounds.add(function() {console.log("OUT OF BOUNDS")} , this)
     //this.bullets.push(bullet)
   }
+, loose : function() {
+  console.log("looooose")
+    pause = true
+    var text = "GAME OVER";
+    var style = { font: "65px Arial", fill: "#ff0044", align: "center" };
+
+    var t = game.add.text(game.world.centerX-100, game.world.centerY-100, text, style);
+  }
 }
