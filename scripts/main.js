@@ -13,4 +13,5 @@ function create() {
 function update() {
   game.physics.arcade.collide(player.instance, level.groundGrp)
   player.update()
+  level.update(game, 1)
 }
