@@ -4,13 +4,11 @@ var mobsService = {
     this.mobs = game.add.group()
     this.mobs.enableBody = true
 }
-, createMob : function(type) {
-  var mob = this.mobs.create(game.width/2, game.height/2, 'mob')
+, createMob : function(type, x, y) {
+  var mob = this.mobs.create(x, y, 'mob')
 
   mob.body.bounce.y = 0.0
   mob.body.gravity.y = 300
-
-  game.physics.arcade.enable(mob)
 }
 , killed : function(bullet, mob) {
   lootService.loot(mob.position)

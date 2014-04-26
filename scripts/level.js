@@ -36,7 +36,9 @@ var level = {
         e.kill()
       if(!e.spawnedNext && e.body.position.x < 0) {
         e.spawnedNext = true
-        this.addGround(game.width)
+        this.addGround(e.body.position.x + e.body.width)
+
+        mobsService.createMob(0, game.world.width, game.world.height - 100)
       }
     }, this)
     //for(i in this.grounds)

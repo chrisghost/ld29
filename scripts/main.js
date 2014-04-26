@@ -1,6 +1,7 @@
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update})
 var pause = false
 var meter = new FPSMeter()
+var step = 5
 
 function preload() {
   game.load.spritesheet('ground', 'assets/ground.png', 800, 64)
@@ -20,7 +21,6 @@ function create() {
   lootService.init()
   player.init()
 
-  mobsService.createMob(0)
 }
 
 var textTimer = 0
@@ -38,9 +38,9 @@ function update() {
     game.physics.arcade.overlap(player.instance, mobsService.mobs, player.loose)
 
     player.update()
-    level.update(1)
-    mobsService.update(1)
-    lootService.update(1)
+    level.update(step)
+    mobsService.update(step)
+    lootService.update(step)
 
     textTimer++
     if(textTimer > 20) {
