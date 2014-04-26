@@ -3,6 +3,9 @@ var player = {
   instance : null
 , jumpKey : null
 , bullets : null
+, fireCoolDown : 0
+, weapon : { name: 'gun', fireCoolDown : 20, nbBullets: 1 }
+, firing : false
 , gold : 0
 , init : function() {
     this.jumpKey = game.input.keyboard.addKey(Phaser.Keyboard.Q)
@@ -22,7 +25,8 @@ var player = {
     this.instance.body.collideWorldBounds = true
 
     this.jumpKey.onDown.add(this.jump, this)
-    this.fireKey.onDown.add(this.fire, this)
+    this.fireKey.onDown.add(function(){this.firing = true}, this)
+    this.fireKey.onUp.add(function(){this.firing = false}, this)
 
     this.gold = 0
   }
@@ -32,15 +36,21 @@ var player = {
     }
 }
 , update : function() {
+    this.fireCoolDown -= 1
+    if(this.firing) this.fire()
   }
 , pickUp : function(playerInstance, loot) {
-    if(loot.lootType == 'gold') player.gold += 1
+    loot.type.pickUp(loot.type)
     destroy(loot)
   }
 , fire : function() {
-    bullet = this.bullets.getFirstExists(false)
-    bullet.reset(this.instance.x, this.instance.y)
-    bullet.body.velocity.x = 500
+    if(this.fireCoolDown > 0) return;
+    this.fireCoolDown = this.weapon.fireCoolDown
+    for(var i = 0; i < this.weapon.nbBullets; i++) {
+      bullet = this.bullets.getFirstExists(false)
+      bullet.reset(this.instance.x, this.instance.y+i*20)
+      bullet.body.velocity.x = 500
+    }
   }
 , loose : function() {
     pause = true

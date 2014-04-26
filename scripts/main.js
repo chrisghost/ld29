@@ -9,7 +9,10 @@ function preload() {
   game.load.image('bkg', 'assets/bkg.png')
   game.load.image('bullet', 'assets/bullet.png')
   game.load.image('mob', 'assets/mob.png')
+
   game.load.image('gold', 'assets/gold.png')
+  game.load.image('speed', 'assets/speed.png')
+  game.load.image('machinegun', 'assets/machinegun.png')
 
   game.load.script('filter', 'scripts/filters/Fire.js')
 }
