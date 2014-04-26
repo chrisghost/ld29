@@ -1,48 +1,48 @@
 var level = {
-  groundGrp : null
+  grounds : null
 , grounds : []
 , bkg : null
 , underWorld : false
 , underworldKey : null
 , hueRotateFilter : null
-, initWorld : function(game) {
+, initWorld : function() {
     this.bkg = game.add.sprite(0, 0, 'bkg')
 
-    this.groundGrp = game.add.group()
-    this.groundGrp.enableBody = true
-    this.addGround(game, 0)
+    this.grounds = game.add.group()
+    this.grounds.enableBody = true
+    this.grounds.physicsBodyType = Phaser.Physics.ARCADE
+    this.addGround(0)
   }
-, addGround : function(game, x) {
-    var ground = this.groundGrp.create(x, game.world.height - 64, 'ground')
-
+, addGround : function(x) {
+    var ground = this.grounds.create(x, game.world.height - 64, 'ground')
+    ground.spawnedNext = false
     //ground.scale.setTo(800/64, 1)
     ground.body.immovable = true
     ground.frame = this.getGroundFrame()
-
-    this.grounds.push(ground)
   }
-, initPlayer : function(game) {
-    player.init(game)
-  }
-, init : function(game) {
-    this.initWorld(game)
-    this.initPlayer(game)
+, init : function() {
+    this.initWorld()
 
     this.underworldKey = game.input.keyboard.addKey(Phaser.Keyboard.F)
     this.underworldKey.onDown.add(this.toggleUnderworld, this)
     this.fireFilter = game.add.filter('Fire', game.width, game.height)
   }
 
-, update : function(game, dx) {
-    for(i in this.grounds)
-      this.grounds[i].body.position.x -= dx
+, update : function(dx) {
+    this.grounds.forEachExists(function(e) {
+      e.body.position.x -= dx
 
-    if(this.grounds[0].body.position.x < -game.width)
-      this.grounds.shift()
-    if(this.grounds[this.grounds.length-1].body.position.x < 0)
-      this.addGround(game, game.width)
+      if(e.body.position.x < -game.width)
+        e.kill()
+      if(!e.spawnedNext && e.body.position.x < 0) {
+        e.spawnedNext = true
+        this.addGround(game.width)
+      }
+    }, this)
+    //for(i in this.grounds)
+      //this.grounds[i].body.position.x -= dx
 
-      this.fireFilter.update()
+    this.fireFilter.update()
   }
 , toggleUnderworld : function() {
     this.underWorld = !this.underWorld
