@@ -1,5 +1,6 @@
 var mobsService = {
   mobs : null
+, fireballs : null
 , bossAlive : false
 , boss : {life:0}
 , init : function() {
@@ -7,6 +8,11 @@ var mobsService = {
     this.mobs.enableBody = true
     this.mobs.setAll('checkWorldBounds', true)
     this.mobs.setAll('outOfBoundsKill', true)
+
+    this.fireballs = game.add.group()
+    this.fireballs.enableBody = true
+    this.fireballs.setAll('checkWorldBounds', true)
+    this.fireballs.setAll('outOfBoundsKill', true)
 }
 , createMobsOnNewGround : function(fromX) {
     if(this.bossAlive) return
@@ -16,13 +22,20 @@ var mobsService = {
     }
   }
 , createMob : function(x, y) {
-  var mob = this.mobs.create(x, y, 
-      level.underWorld ? 'mob'+random.nextInt(2) : 'peaceful'+random.nextInt(2))
+  var type = 'peaceful'+random.nextInt(2)
+  if(level.underWorld) {
+    var n = random.nextInt(Math.ceil(level.underWorldPower))
+    n = n > 3 ? 1 : 0
+    type = 'mob'+n
+  }
+  var mob = this.mobs.create(x, y, type)
 
   mob.jumpCooldown = random.nextInt(150)
+  mob.type = type
   mob.body.bounce.y = 0.0
   mob.body.gravity.y = 300
   mob.hitPower = 0
+  mob.attackCoolDown = 100+random.nextInt(200)
   if(level.underWorld) {
     mob.hitPower = 5
     //mob.filters = [level.fireFilter]
@@ -34,7 +47,7 @@ var mobsService = {
   lootService.loot(mob.position)
   destroy(bullet, mob)
   if(level.underWorld) {
-    level.underWorldPower += 20
+    level.underWorldPower += 1//0.5
     if(level.underWorldPower >= 100 && !mobsService.bossAlive) {
       mobsService.killall()
       mobsService.spawnBoss()
@@ -63,6 +76,7 @@ var mobsService = {
     boss.hitPower = 20
     boss.isBoss = true
     boss.life = 100
+    boss.attackCoolDown = 20
   }
 , update : function(dx) {
     this.mobs.forEachAlive(function(e) {
@@ -71,10 +85,33 @@ var mobsService = {
   }
 , updateMob : function(dx, mob) {
     if(mob.isBoss) {
-      if(mob.life > 70) {
-        if(this.mobs.countLiving() < 10 && Math.random()>0.99)
-          for(var i = 0; i < 10; i++)
-            this.createMob(game.width-random.nextInt(200)+100, game.height/2)
+      mob.attackCoolDown--
+      if(mob.attackCoolDown <= 0) {
+        if(mob.life > 70) {
+          if(this.mobs.countLiving() < 10) {
+            for(var i = 0; i < 10; i++)
+              this.createMob(game.width-random.nextInt(200)+100, game.height/2)
+            mob.attackCoolDown = 250
+          }
+        } else if(mob.life > 50) {
+          for(var i = mob.body.position.y; i < mob.body.position.y+mob.body.height; i += 40) {
+            this.launchFireball(mob, i)
+          }
+          mob.attackCoolDown = 150
+        } else if(mob.life > 30) {
+            for(var i = 0; i < 20; i++)
+              this.createMob(game.width-random.nextInt(500)+100, game.height/2)
+            mob.attackCoolDown = 200
+        } else {
+            for(var i = mob.body.position.y; i < mob.body.position.y+mob.body.height; i += 40) {
+              this.launchFireball(mob, i)
+            }
+            mob.attackCoolDown = 150
+
+            for(var i = 0; i < 15; i++)
+              this.createMob(game.width-random.nextInt(500)+100, game.height/2)
+            mob.attackCoolDown = 200
+        }
       }
     } else {
       mob.body.position.x -= dx
@@ -85,7 +122,23 @@ var mobsService = {
           mob.body.velocity.y -= 300
         }
       }
+      mob.attackCoolDown--
+      if(mob.attackCoolDown <= 0) {
+        if(mob.type == 'mob1') {
+          mob.attackCoolDown = 500
+          for(var i = mob.body.position.y; i < mob.body.position.y+mob.body.height; i += 40) {
+            this.launchFireball(mob, i)
+          }
+        }
+      }
       if(mob.body.position.x < -100) mob.kill()
     }
+  }
+, launchFireball : function(mob, i) {
+    var fireball = mobsService.fireballs.getFirstExists(false)
+    if(fireball == null) fireball = mobsService.fireballs.create(0, 0, 'fireball')
+    fireball.reset(mob.body.position.x, i)
+    fireball.body.velocity.x = -random.nextInt(300)-300
+    fireball.hitPower = 10
   }
 }

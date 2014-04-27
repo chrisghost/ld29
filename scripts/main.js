@@ -21,6 +21,7 @@ function preload() {
   game.load.image('bulletplus', 'assets/machinegun.png')
   game.load.image('fastfire', 'assets/fastfire.png')
   game.load.image('health', 'assets/health.png')
+  game.load.image('fireball', 'assets/fireball.png')
 
   game.load.script('filter', 'scripts/filters/Fire.js')
 }
@@ -59,20 +60,25 @@ function update(t) {
   var d = Date.now()
   var delta = d - lastTime
   lastTime = d
-  if(gamerunnning) {
     //if(!level.animationRunning)
-    game.physics.arcade.collide(player.instance, level.grounds)
+  game.physics.arcade.collide(player.instance, level.grounds)
 
-    game.physics.arcade.overlap(player.instance, level.portals, level.toggleUnderworld)
-    game.physics.arcade.collide(mobsService.mobs, level.grounds)
-    game.physics.arcade.collide(lootService.loots, level.grounds)
+  if(mobsService.bossAlive) {
+    game.physics.arcade.overlap(player.instance, mobsService.fireballs, player.hit)
+    game.physics.arcade.overlap(player.bullets, mobsService.fireballs, function(bullet, fb) { bullet.kill() })
+  }
 
-    game.physics.arcade.collide(player.bullets, mobsService.mobs, mobsService.killed)
+  game.physics.arcade.overlap(player.instance, level.portals, level.toggleUnderworld)
+  game.physics.arcade.collide(mobsService.mobs, level.grounds)
+  game.physics.arcade.collide(lootService.loots, level.grounds)
 
-    game.physics.arcade.overlap(player.instance, lootService.loots, player.pickUp)
+  game.physics.arcade.collide(player.bullets, mobsService.mobs, mobsService.killed)
 
-    game.physics.arcade.overlap(player.instance, mobsService.mobs, player.hit)
+  game.physics.arcade.overlap(player.instance, lootService.loots, player.pickUp)
 
+  game.physics.arcade.overlap(player.instance, mobsService.mobs, player.hit)
+
+  if(gamerunnning) {
     var mvtDelta = Math.floor(delta*step)
     player.update(mvtDelta)
     level.update(mvtDelta)
