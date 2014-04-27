@@ -25,6 +25,7 @@ var mobsService = {
 , killed : function(bullet, mob) {
   lootService.loot(mob.position)
   destroy(bullet, mob)
+  if(level.underWorld) level.underWorldPower += 1
 }
 , killall : function() {
     this.mobs.forEachAlive(function(e) {

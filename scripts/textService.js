@@ -13,7 +13,7 @@ var textService = {
     }
   }
 , write : function(position, color, text, font) {
-    var ft = font || "20px Monospace"
+    var ft = font || "10px Monospace"
     return game.add.text(position.x, position.y, text, { font: font, fill: "#FFFFFF", align: "center" })
   }
 }

@@ -1,4 +1,4 @@
-var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update})
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game', { preload: preload, create: create, update: update})
 var meter = new FPSMeter()
 var baseStep = 0.25
 var step = 0.25
@@ -74,7 +74,7 @@ function update(t) {
 
     textTimer++
     if(textTimer > 20) {
-      player.displayDashboard()
+      stats.displayDashboard()
       textTimer = 0
     }
   }

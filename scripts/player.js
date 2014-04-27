@@ -70,17 +70,7 @@ var player = {
     var style = { font: "65px Arial", fill: "#ff0044", align: "center" }
 
     var t = game.add.text(game.world.centerX-100, game.world.centerY-100, text, style)
-  }
-, displayDashboard : function() {
-    console.log("DRAW DASHBOARD", level.underWorld)
-    var graphics = game.add.graphics(0, 0)
-    graphics.beginFill(0xFF3300)
-    graphics.drawRect(0, 0, game.width, game.height/10)
-    graphics.endFill()
-
-    textService.write({x:200, y:0}, 'white',
-        "Gold: " + player.gold+
-        "\n grounds : " + level.grounds.countLiving())
+    gamerunnning = false
   }
 , addGold : function(g) {
     player.gold += g
