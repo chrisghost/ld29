@@ -17,6 +17,7 @@ function preload() {
   game.load.image('speed', 'assets/speed.png')
   game.load.image('bulletplus', 'assets/machinegun.png')
   game.load.image('fastfire', 'assets/fastfire.png')
+  game.load.image('health', 'assets/health.png')
 
   game.load.script('filter', 'scripts/filters/Fire.js')
 }
@@ -65,7 +66,7 @@ function update(t) {
 
     game.physics.arcade.overlap(player.instance, lootService.loots, player.pickUp)
 
-    game.physics.arcade.overlap(player.instance, mobsService.mobs, player.loose)
+    game.physics.arcade.overlap(player.instance, mobsService.mobs, player.hit)
 
     var mvtDelta = Math.floor(delta*step)
     player.update(mvtDelta)

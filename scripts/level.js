@@ -52,6 +52,7 @@ var level = {
     if(level.underWorld) {
       // level.fireFilter.update()
       level.underWorldPower -= dx/1000
+      if(level.underWorldPower < 0) level.underWorldPower = 0
     }
   }
 , moveGrounds : function(dx) {

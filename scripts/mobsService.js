@@ -18,7 +18,9 @@ var mobsService = {
   mob.jumpCooldown = random.nextInt(150)
   mob.body.bounce.y = 0.0
   mob.body.gravity.y = 300
+  mob.hitPower = 1
   if(level.underWorld) {
+    mob.hitPower = 5
     //mob.filters = [level.fireFilter]
   }
 }

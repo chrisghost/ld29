@@ -4,9 +4,11 @@ var player = {
 , jumpKey : null
 , bullets : null
 , fireCoolDown : 0
-, weapon : { name: 'gun', fireCoolDown : 10, nbBullets: 2 }
+, weapon : { name: 'gun', fireCoolDown : 50, nbBullets: 2 }
 , firing : false
 , gold : 0
+, life : 100
+, maxLife : 100
 , init : function() {
     player.jumpKey = game.input.keyboard.addKey(Phaser.Keyboard.Q)
     player.fireKey = game.input.keyboard.addKey(Phaser.Keyboard.W)
@@ -71,6 +73,11 @@ var player = {
       bullet.body.velocity.y = Math.sin(bullet.rotation)*500
     }
   }
+, hit : function(p, mob) {
+  player.life -= mob.hitPower
+  mob.kill()
+  if(player.life <= 0) player.loose()
+}
 , loose : function() {
     var text = "GAME OVER"
     var style = { font: "65px Arial", fill: "#ff0044", align: "center" }
