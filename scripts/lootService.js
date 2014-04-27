@@ -1,12 +1,12 @@
 var lootService = {
   loots : null
 , possibleLoots : [
-    { sprite : 'gold',        lootChance: 50, lootChanceUnderworld: 10, pickUp : function(that) { player.addGold(1) } }
+    { sprite : 'gold',        lootChance: 50, lootChanceUnderworld: 8, pickUp : function(that) { player.addGold(1) } }
   //, { sprite : 'speed',       lootChance: 1,  lootChanceUnderworld: 1,  pickUp : function(that) { step += 0.01 } }
   , { sprite : 'bulletplus',  lootChance: 0,  lootChanceUnderworld: 1,  pickUp : function(that) { player.weapon.nbBullets += 1 } }
-  , { sprite : 'fastfire',    lootChance: 0,  lootChanceUnderworld: 1,  pickUp : function(that) { player.weapon.fireCoolDown -= 0.2 } }
-  , { sprite : 'health',      lootChance: 20, lootChanceUnderworld: 0,  pickUp : function(that) { player.life = (player.life + 5 > player.maxLife) ? player.maxLife : player.life + 5 } }
-  , { sprite : '',            lootChance: 1,  lootChanceUnderworld: 5,  pickUp : function(that) { } }
+  , { sprite : 'fastfire',    lootChance: 0,  lootChanceUnderworld: 1,  pickUp : function(that) { player.weapon.fireCoolDown -= 0.4 } }
+  , { sprite : 'health',      lootChance: 20, lootChanceUnderworld: 0,  pickUp : function(that) { player.life = (player.life + 20 > player.maxLife) ? player.maxLife : player.life + 5 } }
+  , { sprite : '',            lootChance: 1,  lootChanceUnderworld: 2,  pickUp : function(that) { } }
   ]
 , init : function() {
     this.loots = game.add.group()

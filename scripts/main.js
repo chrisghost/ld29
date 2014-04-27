@@ -3,11 +3,13 @@ var meter = new FPSMeter()
 var baseStep = 0.25
 var step = 0.25
 var gamerunnning = false
+var menuBkg = null
 
 function preload() {
   game.load.spritesheet('ground', 'assets/ground.png', 800, 64, 2)
   game.load.spritesheet('player', 'assets/player.png', 22, 36, 10)
   game.load.image('bkg', 'assets/bkg.png')
+  game.load.image('bkgUnderworld', 'assets/bkgUnderworld.png')
   game.load.image('bullet', 'assets/bullet.png')
   game.load.image('peaceful0', 'assets/peaceful0.png')
   game.load.image('peaceful1', 'assets/peaceful1.png')
@@ -28,29 +30,40 @@ function preload() {
 }
 
 function create() {
-
-
   game.onPause.add(onPause, this)
   game.onResume.add(onResume, this)
   game.physics.startSystem(Phaser.Physics.ARCADE)
-  game.input.keyboard.addKey(Phaser.Keyboard.P).onDown.add(function() {
-    if(gamerunnning == false) launchGame()
+  game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(function() {
+    if(story.next()) {
+      textService.clear()
+      textService.write({x:10, y:0}, "#000000",
+          story.get()
+        , "49px Monospace"
+      )
+    } else {
+      if(gamerunnning == false) launchGame()
+    }
   })
-  textService.title(
-      "Ludum Dare 29\n"+
-      "The Underworld Adventure\n"+
-      "Controls: W - Fire\n"+
-      "          P - Launch\n"
+  level.fireFilter = game.add.filter('Fire', game.width, game.height)
+  menuBkg = game.add.sprite(0, 0, 'bkg')
+  //menuBkg.filters = [level.fireFilter]
+
+  textService.write({x:10, y:0}, "#000000",
+      story.get()
+    , "49px Monospace"
   )
+
 }
 
 function launchGame() {
+  menuBkg.destroy()
   textService.clear()
   level.init()
   mobsService.init()
   lootService.init()
   player.init()
   gamerunnning = true
+  textService.announce("Surface (peaceful)")
 }
 
 var textTimer = 0
@@ -61,6 +74,8 @@ function update(t) {
   var d = Date.now()
   var delta = d - lastTime
   lastTime = d
+
+  level.fireFilter.update()
     //if(!level.animationRunning)
   game.physics.arcade.collide(player.instance, level.grounds)
 

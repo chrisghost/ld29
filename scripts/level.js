@@ -3,6 +3,7 @@ var level = {
 , grounds : null
 , portals : null
 , bkg : null
+, bkgUnderworld : null
 , underWorld : false
 , hueRotateFilter : null
 , animationRunning : false
@@ -13,6 +14,7 @@ var level = {
 , underWorldPower : 0
 , initWorld : function() {
     level.bkg = game.add.sprite(0, 0, 'bkg')
+    level.bkgUnderworld = game.add.sprite(0, game.height, 'bkgUnderworld')
 
     level.portals = game.add.group()
     level.portals.enableBody = true
@@ -33,8 +35,6 @@ var level = {
   }
 , init : function() {
     level.initWorld()
-
-    level.fireFilter = game.add.filter('Fire', game.width, game.height)
   }
 
 , update : function(dx) {
@@ -91,13 +91,14 @@ var level = {
       else e.kill()
     })
 
-    if(!level.underWorld) {
-      level.bkg.filters = null
+    if(!mobsService.bossAlive) {
+      level.bkgUnderworld.filters = null
     } else {
-      level.bkg.filters = [level.fireFilter]
+      level.bkgUnderworld.filters = [level.fireFilter]
     }
   } else {
     level.bkg.position.y -= level.goUnderWorldAnimationStepSize
+    level.bkgUnderworld.position.y -= level.goUnderWorldAnimationStepSize
     level.grounds.forEachAlive(function(e) {
       e.body.position.y -= level.goUnderWorldAnimationStepSize
     })

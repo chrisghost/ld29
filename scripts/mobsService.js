@@ -48,7 +48,7 @@ var mobsService = {
   lootService.loot(mob.position)
   destroy(bullet, mob)
   if(level.underWorld) {
-    level.underWorldPower += 5//0.5
+    level.underWorldPower += 10//0.5
     if(level.underWorldPower >= 100 && !mobsService.bossAlive) {
       mobsService.killall()
       mobsService.spawnBoss()
@@ -56,9 +56,10 @@ var mobsService = {
   }
 }
 , hitBoss : function(bullet, boss) {
-    boss.life-=5
+    boss.life-=100
     destroy(bullet)
     boss.body.velocity.x = 0
+    if(boss.life < 0 ) player.win()
   }
 , killall : function() {
     this.mobs.forEachAlive(function(e) {
@@ -66,6 +67,8 @@ var mobsService = {
     })
   }
 , spawnBoss : function() {
+    textService.announce("You have summoned\nKarakrian !")
+
     this.bossAlive = true
     var boss = this.mobs.create(game.width-200, game.height/2, 'boss')
     boss.scale.setTo(3, 3)

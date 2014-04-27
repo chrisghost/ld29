@@ -1,11 +1,12 @@
 var textService = {
   texts : []
-, announce : function(text) {
+, announce : function(text, destroy) {
+    var des = (typeof destroy == 'undefined') ? true : destroy
     var t = this.write({x:50, y:game.height/2}, 'white', text, "50px Monospace")
-    setTimeout(function(){t.destroy()}, 1000)
+    if(des) setTimeout(function(){t.destroy()}, 1000)
   }
 , title : function(text) {
-    this.texts.push(this.write({x:50, y:game.height/3}, 'white', text, "50px Monospace"))
+    this.write({x:50, y:game.height/3}, 'white', text, "50px Monospace")
   }
 , clear : function() {
     for(i in this.texts) {
@@ -14,6 +15,9 @@ var textService = {
   }
 , write : function(position, color, text, font) {
     var ft = font || "10px Monospace"
-    return game.add.text(position.x, position.y, text, { font: font, fill: "#FFFFFF", align: "center" })
+    var col = color || "#FFFFFF"
+    var el = game.add.text(position.x, position.y, text, { font: font, fill: col, align: "center" })
+    this.texts.push(el)
+    return el
   }
 }

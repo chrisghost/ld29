@@ -10,8 +10,8 @@ var player = {
 , life : 100
 , maxLife : 100
 , init : function() {
-    player.jumpKey = game.input.keyboard.addKey(Phaser.Keyboard.Q)
-    player.fireKey = game.input.keyboard.addKey(Phaser.Keyboard.W)
+    player.jumpKey = game.input.keyboard.addKey(Phaser.Keyboard.D)
+    player.fireKey = game.input.keyboard.addKey(Phaser.Keyboard.S)
     game.input.keyboard.addKey(Phaser.Keyboard.J).onDown.add(level.toggleUnderworld)
 
     player.bullets = game.add.group()
@@ -81,11 +81,17 @@ var player = {
   mob.kill()
   if(player.life <= 0) player.loose()
 }
+, win : function() {
+    stats.finish()
+    mobsService.killall()
+    var finishTxt = "You won in "+moment(stats.time).format('m')+" min. "+moment(stats.time).format('s')+" sec."
+    textService.announce(finishTxt, false)
+    gamerunnning = false
+  }
 , loose : function() {
-    var text = "GAME OVER"
-    var style = { font: "65px Arial", fill: "#ff0044", align: "center" }
-
-    var t = game.add.text(game.world.centerX-100, game.world.centerY-100, text, style)
+    stats.finish()
+    var finishTxt = "You lost in "+moment(stats.time).format('m')+" min. "+moment(stats.time).format('s')+" sec."
+    textService.announce(finishTxt, false)
     gamerunnning = false
   }
 , addGold : function(g) {
