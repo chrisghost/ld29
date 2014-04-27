@@ -12,7 +12,6 @@ var player = {
 , init : function() {
     player.jumpKey = game.input.keyboard.addKey(Phaser.Keyboard.D)
     player.fireKey = game.input.keyboard.addKey(Phaser.Keyboard.S)
-    game.input.keyboard.addKey(Phaser.Keyboard.J).onDown.add(level.toggleUnderworld)
 
     player.bullets = game.add.group()
     player.bullets.enableBody = true
