@@ -13,7 +13,7 @@ function preload() {
   game.load.image('peaceful1', 'assets/peaceful1.png')
   game.load.image('mob0', 'assets/mob.png')
   game.load.image('mob1', 'assets/mob1.png')
-  game.load.spritesheet('boss', 'assets/boss.png', 320, 64, 1)
+  game.load.spritesheet('boss', 'assets/boss.png', 64, 64, 5)
   game.load.image('portal', 'assets/portal.png')
 
   game.load.image('gold', 'assets/gold.png')
@@ -63,10 +63,8 @@ function update(t) {
     //if(!level.animationRunning)
   game.physics.arcade.collide(player.instance, level.grounds)
 
-  if(mobsService.bossAlive) {
-    game.physics.arcade.overlap(player.instance, mobsService.fireballs, player.hit)
-    game.physics.arcade.overlap(player.bullets, mobsService.fireballs, function(bullet, fb) { bullet.kill() })
-  }
+  game.physics.arcade.overlap(player.instance, mobsService.fireballs, player.hit)
+  game.physics.arcade.overlap(player.bullets, mobsService.fireballs, function(bullet, fb) { bullet.kill() })
 
   game.physics.arcade.overlap(player.instance, level.portals, level.toggleUnderworld)
   game.physics.arcade.collide(mobsService.mobs, level.grounds)

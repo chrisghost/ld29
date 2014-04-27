@@ -25,7 +25,7 @@ var mobsService = {
   var type = 'peaceful'+random.nextInt(2)
   if(level.underWorld) {
     var n = random.nextInt(Math.ceil(level.underWorldPower))
-    n = n > 3 ? 1 : 0
+    n = n > 5 ? 1 : 0
     type = 'mob'+n
   }
   var mob = this.mobs.create(x, y, type)
@@ -47,7 +47,7 @@ var mobsService = {
   lootService.loot(mob.position)
   destroy(bullet, mob)
   if(level.underWorld) {
-    level.underWorldPower += 1//0.5
+    level.underWorldPower += 5//0.5
     if(level.underWorldPower >= 100 && !mobsService.bossAlive) {
       mobsService.killall()
       mobsService.spawnBoss()
@@ -69,6 +69,9 @@ var mobsService = {
     var boss = this.mobs.create(game.width-200, game.height/2, 'boss')
     boss.scale.setTo(3, 3)
     this.boss = boss
+
+    boss.animations.add('boss')
+    boss.animations.play('boss', 5, true)
 
     boss.jumpCooldown = random.nextInt(150)
     boss.body.bounce.y = 0.0
