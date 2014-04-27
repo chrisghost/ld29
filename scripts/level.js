@@ -33,7 +33,7 @@ var level = {
 , init : function() {
     level.initWorld()
 
-    level.fireFilter = game.add.filter('Fire', game.width, game.height)
+    level.fireFilter = game.add.filter('Fire', 32, 32)
   }
 
 , update : function(dx) {
@@ -48,7 +48,7 @@ var level = {
     })
     level.moveGrounds(dx)
 
-    //level.fireFilter.update()
+    //if(level.underWorld) level.fireFilter.update()
   }
 , moveGrounds : function(dx) {
     level.grounds.forEachAlive(function(e) {
@@ -60,7 +60,7 @@ var level = {
         var nx = e.body.position.x + e.body.width
         this.addGround(nx > 0 ? nx : 0, e.body.position.y)
 
-        //mobsService.createMobsOnNewGround(nx > 0 ? nx : 0)
+        mobsService.createMobsOnNewGround(nx > 0 ? nx : 0)
       }
       if(e.body.position.x < -game.width)
         e.kill()
@@ -106,11 +106,9 @@ var level = {
     textService.announce("Going to underworld!")
     level.goUnderWorldAnimationPos = 0
 
-    /*
     mobsService.killall()
     lootService.killall()
     player.killallBullets()
-    */
 
     level.prepareUnderworldGround()
 

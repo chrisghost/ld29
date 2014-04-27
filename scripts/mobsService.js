@@ -3,6 +3,8 @@ var mobsService = {
 , init : function() {
     this.mobs = game.add.group()
     this.mobs.enableBody = true
+    this.mobs.setAll('checkWorldBounds', true)
+    this.mobs.setAll('outOfBoundsKill', true)
 }
 , createMobsOnNewGround : function(fromX) {
     var toX = fromX + level.groundWidth
@@ -11,11 +13,14 @@ var mobsService = {
     }
   }
 , createMob : function(x, y) {
-  var mob = this.mobs.create(x, y, 'mob')
+  var mob = this.mobs.create(x, y, 'mob'+random.nextInt(2))
 
   mob.jumpCooldown = random.nextInt(150)
   mob.body.bounce.y = 0.0
   mob.body.gravity.y = 300
+  if(level.underWorld) {
+    //mob.filters = [level.fireFilter]
+  }
 }
 , killed : function(bullet, mob) {
   lootService.loot(mob.position)
