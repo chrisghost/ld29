@@ -25,7 +25,8 @@ var mobsService = {
   var type = 'peaceful'+random.nextInt(2)
   if(level.underWorld) {
     var n = random.nextInt(Math.ceil(level.underWorldPower))
-    n = n > 5 ? 1 : 0
+    n = n > 6 ? 1 :
+          n > 3 ? 2 : 0
     type = 'mob'+n
   }
   var mob = this.mobs.create(x, y, type)
@@ -118,12 +119,14 @@ var mobsService = {
       }
     } else {
       mob.body.position.x -= dx
-      if(mob.body.touching.down) {
+      if(mob.body.touching.down && mob.type != 'mob2') {
         mob.jumpCooldown--
         if(mob.jumpCooldown <= 0) {
           mob.jumpCooldown = random.nextInt(150)
           mob.body.velocity.y -= 300
         }
+      } else if(mob.type == 'mob2') {
+        mob.body.position.x -= dx
       }
       mob.attackCoolDown--
       if(mob.attackCoolDown <= 0) {
