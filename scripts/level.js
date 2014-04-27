@@ -73,7 +73,7 @@ var level = {
 , goUnderWorldAnimationStep : function(dx) {
 
   level.goUnderWorldAnimationPos += level.goUnderWorldAnimationStepSize
-  if (Math.abs(level.goUnderWorldAnimationPos) >= game.height-10) {
+  if (Math.abs(level.goUnderWorldAnimationPos) >= game.height) {
     console.log("Landed in underworld!")
     level.goUnderWorldAnimation = false
     level.animationRunning = false
@@ -99,7 +99,6 @@ var level = {
   level.addGround(0, (-64))
 }
 , prepareUnderworldGround : function() {
-  //level.killall()
   level.addGround(0, (game.height*2-64))
 }
 , toggleUnderworld : function(playerInstance, portalInstance) {
@@ -132,7 +131,7 @@ var level = {
     */
   }
 , openPortal : function() {
-    var portalPos = { 'x': game.width - 64, 'y': game.height - 128 }
+    var portalPos = { 'x': game.width - 64, 'y': game.height - 128*2 }
     var nPortal = level.portals.create(portalPos.x, portalPos.y, 'portal')
   }
 , getGroundFrame : function() {
