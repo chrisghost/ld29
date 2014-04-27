@@ -1,12 +1,18 @@
 var level = {
   grounds : null
-, grounds : []
+, portals : null
 , bkg : null
 , underWorld : false
-, underworldKey : null
 , hueRotateFilter : null
+, animationRunning : false
+, groundWidth : 800
+, goUnderWorldAnimation : false
 , initWorld : function() {
     this.bkg = game.add.sprite(0, 0, 'bkg')
+
+    this.portals = game.add.group()
+    this.portals.enableBody = true
+    this.portals.physicsBodyType = Phaser.Physics.ARCADE
 
     this.grounds = game.add.group()
     this.grounds.enableBody = true
@@ -23,12 +29,17 @@ var level = {
 , init : function() {
     this.initWorld()
 
-    this.underworldKey = game.input.keyboard.addKey(Phaser.Keyboard.F)
-    this.underworldKey.onDown.add(this.toggleUnderworld, this)
     this.fireFilter = game.add.filter('Fire', game.width, game.height)
   }
 
 , update : function(dx) {
+    if(this.goUnderWorldAnimation) {
+      this.goUnderWorldAnimationStep()
+      return
+    }
+    this.portals.forEachExists(function(e) {
+      e.body.position.x -= dx
+    })
     this.grounds.forEachExists(function(e) {
       e.body.position.x -= dx
 
@@ -38,24 +49,41 @@ var level = {
         e.spawnedNext = true
         this.addGround(e.body.position.x + e.body.width)
 
-        mobsService.createMob(0, game.world.width, game.world.height - 100)
+        mobsService.createMobsOnNewGround(e.body.position.x + e.body.width)
       }
     }, this)
     //for(i in this.grounds)
       //this.grounds[i].body.position.x -= dx
 
-    this.fireFilter.update()
+    //this.fireFilter.update()
   }
+, goUnderWorldAnimationStep : function() {
+  this.bkg.position.y -= 1
+  this.grounds.forEach(function(e) {
+    e.body.position.y -= 1
+  })
+}
 , toggleUnderworld : function() {
-    this.underWorld = !this.underWorld
+    if(level.goUnderWorldAnimation) return;
+    step = 0
+    level.underWorld = !level.underWorld
+    player.instance.body.gravity.y = 0
+    level.goUnderWorldAnimation = true
+    level.animationRunning = true
+    textService.announce("Going to underworld!")
+
+    /*
     if(!this.underWorld) {
       this.bkg.filters = null
     } else {
       this.bkg.filters = [this.fireFilter]
     }
-    for(i in this.grounds)
-      this.grounds[i].frame = this.getGroundFrame()
+    */
   }
+, openPortal : function() {
+  var portalPos = { 'x': game.width - 64, 'y': game.height - 128 }
+  this.portals.create(portalPos.x, portalPos.y, 'portal')
+}
 , getGroundFrame : function() {
     if(this.underWorld) return 1
     return 0

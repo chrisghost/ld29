@@ -4,7 +4,7 @@ var player = {
 , jumpKey : null
 , bullets : null
 , fireCoolDown : 0
-, weapon : { name: 'gun', fireCoolDown : 20, nbBullets: 1 }
+, weapon : { name: 'gun', fireCoolDown : 10, nbBullets: 1 }
 , firing : false
 , gold : 0
 , init : function() {
@@ -46,9 +46,9 @@ var player = {
 , fire : function() {
     if(this.fireCoolDown > 0) return;
     this.fireCoolDown = this.weapon.fireCoolDown
-    for(var i = 0; i < this.weapon.nbBullets; i++) {
+    for(var i = 1; i <= this.weapon.nbBullets; i++) {
       bullet = this.bullets.getFirstExists(false)
-      bullet.reset(this.instance.x, this.instance.y+i*20)
+      bullet.reset(this.instance.x, this.instance.y+32-i*20)
       bullet.body.velocity.x = 500
     }
   }
@@ -65,10 +65,13 @@ var player = {
     graphics.drawRect(0, 0, game.width, game.height/10)
     graphics.endFill()
 
-    game.add.text(200, 0, 
-      "Gold: " + this.gold+ "\n alive : " + this.bullets.countLiving(),
-      { font: "20px Arial", fill: "#FFFFFF", align: "right" }
-    )
-
+    textService.write({x:200, y:0}, 'white', "Gold: " + this.gold+ "\n alive : " + this.bullets.countLiving())
+  }
+, addGold : function(g) {
+    this.gold += g
+    if(this.gold >= 1) {
+      this.gold -= 10
+      level.openPortal()
+    }
   }
 }
