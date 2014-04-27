@@ -9,6 +9,8 @@ function preload() {
   game.load.image('player', 'assets/player.png')
   game.load.image('bkg', 'assets/bkg.png')
   game.load.image('bullet', 'assets/bullet.png')
+  game.load.image('peaceful0', 'assets/peaceful0.png')
+  game.load.image('peaceful1', 'assets/peaceful1.png')
   game.load.image('mob0', 'assets/mob.png')
   game.load.image('mob1', 'assets/mob1.png')
   game.load.image('portal', 'assets/portal.png')

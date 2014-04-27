@@ -12,7 +12,7 @@ var level = {
 , goUnderWorldAnimationStepSize : -10
 , underWorldPower : 0
 , initWorld : function() {
-    //level.bkg = game.add.sprite(0, 0, 'bkg')
+    level.bkg = game.add.sprite(0, 0, 'bkg')
 
     level.portals = game.add.group()
     level.portals.enableBody = true
@@ -34,7 +34,7 @@ var level = {
 , init : function() {
     level.initWorld()
 
-    level.fireFilter = game.add.filter('Fire', 32, 32)
+    level.fireFilter = game.add.filter('Fire', game.width, game.height)
   }
 
 , update : function(dx) {
@@ -50,10 +50,12 @@ var level = {
     level.moveGrounds(dx)
 
     if(level.underWorld) {
-      // level.fireFilter.update()
+       level.fireFilter.update()
       level.underWorldPower -= dx/1000
-      if(level.underWorldPower < 0) level.underWorldPower = 0
+    } else {
+      level.underWorldPower -= dx/300
     }
+    if(level.underWorldPower < 0) level.underWorldPower = 0
   }
 , moveGrounds : function(dx) {
     level.grounds.forEachAlive(function(e) {
@@ -75,7 +77,6 @@ var level = {
 
   level.goUnderWorldAnimationPos += level.goUnderWorldAnimationStepSize
   if (Math.abs(level.goUnderWorldAnimationPos) >= game.height) {
-    console.log("Landed in underworld!")
     level.goUnderWorldAnimation = false
     level.animationRunning = false
     step = baseStep
@@ -83,8 +84,19 @@ var level = {
     player.resetGravity()
     //level.addGround(0)
     player.resetPosition()
+
+    level.grounds.forEachAlive(function(e) {
+      if(e.body.position.y > 0 && e.body.position.y < game.height) e.body.position.y = game.height-64
+      else e.kill()
+    })
+
+    if(!level.underWorld) {
+      level.bkg.filters = null
+    } else {
+      level.bkg.filters = [level.fireFilter]
+    }
   } else {
-    //level.bkg.position.y -= level.goUnderWorldAnimationStepSize
+    level.bkg.position.y -= level.goUnderWorldAnimationStepSize
     level.grounds.forEachAlive(function(e) {
       e.body.position.y -= level.goUnderWorldAnimationStepSize
     })
@@ -123,13 +135,6 @@ var level = {
     else                 level.prepareSurfaceGround()
 
     level.portals.forEachAlive(function(e){e.kill()})
-    /*
-    if(!level.underWorld) {
-      level.bkg.filters = null
-    } else {
-      level.bkg.filters = [level.fireFilter]
-    }
-    */
   }
 , openPortal : function() {
     var portalPos = { 'x': game.width - 64, 'y': game.height - 128*2 }

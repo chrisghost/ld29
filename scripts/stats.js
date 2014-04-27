@@ -1,6 +1,7 @@
 var stats = {
   elem : document.getElementById('stats')
 , displayDashboard : function() {
+    var uwP = Math.floor(level.underWorldPower)
     this.elem.innerHTML = "Gold: " + player.gold
                         + "<br /> grounds : " + level.grounds.countLiving()
                         + "<br /> <div style='height:30px;width:100%;background-color:red'>"
@@ -8,7 +9,7 @@ var stats = {
                         + "</div>"
 
                         + "<br /> <br /> <div style='height:30px;width:100%;background-color:black'>"
-                        + " <div style='height:30px;width:"+level.underWorldPower+"%;background-color:violet;text-align:center'>"+level.underWorldPower+"</div>"
+                        + " <div style='height:30px;width:"+uwP+"%;background-color:violet;text-align:center'>"+uwP+"</div>"
                         + "</div>"
   }
 

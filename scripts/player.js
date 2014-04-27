@@ -87,8 +87,8 @@ var player = {
   }
 , addGold : function(g) {
     player.gold += g
-    if(player.gold >= 10) {
-      player.gold -= 10
+    if(player.gold >= 5) {
+      player.gold -= 5
       level.openPortal()
     }
   }

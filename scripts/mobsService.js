@@ -8,17 +8,18 @@ var mobsService = {
 }
 , createMobsOnNewGround : function(fromX) {
     var toX = fromX + level.groundWidth
-    for(var x = fromX; x < toX; x += 100) {
+    for(var x = fromX; x < toX; x += 100-level.underWorldPower/10) {
       this.createMob(x - Math.floor((Math.random()-0.5)*50), game.height - 128)
     }
   }
 , createMob : function(x, y) {
-  var mob = this.mobs.create(x, y, 'mob'+random.nextInt(2))
+  var mob = this.mobs.create(x, y, 
+      level.underWorld ? 'mob'+random.nextInt(2) : 'peaceful'+random.nextInt(2))
 
   mob.jumpCooldown = random.nextInt(150)
   mob.body.bounce.y = 0.0
   mob.body.gravity.y = 300
-  mob.hitPower = 1
+  mob.hitPower = 0
   if(level.underWorld) {
     mob.hitPower = 5
     //mob.filters = [level.fireFilter]
