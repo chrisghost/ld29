@@ -1,5 +1,6 @@
 var level = {
-  grounds : null
+  id : Math.random()
+, grounds : null
 , portals : null
 , bkg : null
 , underWorld : false
@@ -7,85 +8,128 @@ var level = {
 , animationRunning : false
 , groundWidth : 800
 , goUnderWorldAnimation : false
+, goUnderWorldAnimationPos : 0
+, goUnderWorldAnimationStepSize : 10
 , initWorld : function() {
-    this.bkg = game.add.sprite(0, 0, 'bkg')
+    //level.bkg = game.add.sprite(0, 0, 'bkg')
 
-    this.portals = game.add.group()
-    this.portals.enableBody = true
-    this.portals.physicsBodyType = Phaser.Physics.ARCADE
+    level.portals = game.add.group()
+    level.portals.enableBody = true
+    level.portals.physicsBodyType = Phaser.Physics.ARCADE
 
-    this.grounds = game.add.group()
-    this.grounds.enableBody = true
-    this.grounds.physicsBodyType = Phaser.Physics.ARCADE
-    this.addGround(0)
+    level.grounds = game.add.group()
+    level.grounds.enableBody = true
+    level.grounds.physicsBodyType = Phaser.Physics.ARCADE
+    level.addGround(0)
   }
-, addGround : function(x) {
-    var ground = this.grounds.create(x, game.world.height - 64, 'ground')
+, addGround : function(x, py) {
+    var y = py || game.height - 64
+    var ground = this.grounds.create(x, y, 'ground')
     ground.spawnedNext = false
     //ground.scale.setTo(800/64, 1)
     ground.body.immovable = true
     ground.frame = this.getGroundFrame()
   }
 , init : function() {
-    this.initWorld()
+    level.initWorld()
 
-    this.fireFilter = game.add.filter('Fire', game.width, game.height)
+    level.fireFilter = game.add.filter('Fire', game.width, game.height)
   }
 
 , update : function(dx) {
-    if(this.goUnderWorldAnimation) {
-      this.goUnderWorldAnimationStep()
+    if(dx > 16 || dx <= 0) dx = 16 // FIXME : remove me :)
+    if(level.goUnderWorldAnimation) {
+      level.goUnderWorldAnimationStep(dx)
       return
     }
-    this.portals.forEachExists(function(e) {
+
+    level.portals.forEachExists(function(e) {
       e.body.position.x -= dx
     })
-    this.grounds.forEachExists(function(e) {
+    level.moveGrounds(dx)
+
+    //level.fireFilter.update()
+  }
+, moveGrounds : function(dx) {
+    level.grounds.forEachAlive(function(e) {
+      //console.log("from", e.body.position.x, "-=", dx, "Y = ", e.body.position.y)
       e.body.position.x -= dx
 
-      if(e.body.position.x < -game.width)
-        e.kill()
       if(!e.spawnedNext && e.body.position.x < 0) {
         e.spawnedNext = true
-        this.addGround(e.body.position.x + e.body.width)
+        var nx = e.body.position.x + e.body.width
+        this.addGround(nx > 0 ? nx : 0, e.body.position.y)
 
-        mobsService.createMobsOnNewGround(e.body.position.x + e.body.width)
+        //mobsService.createMobsOnNewGround(nx > 0 ? nx : 0)
       }
-    }, this)
-    //for(i in this.grounds)
-      //this.grounds[i].body.position.x -= dx
-
-    //this.fireFilter.update()
+      if(e.body.position.x < -game.width)
+        e.kill()
+    }, level)
   }
-, goUnderWorldAnimationStep : function() {
-  this.bkg.position.y -= 1
-  this.grounds.forEach(function(e) {
-    e.body.position.y -= 1
+, goUnderWorldAnimationStep : function(dx) {
+
+  level.goUnderWorldAnimationPos += level.goUnderWorldAnimationStepSize
+  if (level.goUnderWorldAnimationPos >= game.height-10) {
+    console.log("Landed in underworld!")
+    level.goUnderWorldAnimation = false
+    level.animationRunning = false
+    step = baseStep
+    //level.bkg.kill()
+    player.resetGravity()
+    //level.addGround(0)
+    player.resetPosition()
+  } else {
+    //level.bkg.position.y -= level.goUnderWorldAnimationStepSize
+    level.grounds.forEachAlive(function(e) {
+      e.body.position.y -= level.goUnderWorldAnimationStepSize
+    })
+    player.resetPosition()
+  }
+}
+, killall : function() {
+  level.grounds.forEach(function(e) {
+    e.kill()
   })
 }
-, toggleUnderworld : function() {
+, prepareUnderworldGround : function() {
+  //level.killall()
+  level.addGround(0, (game.height*2-64))
+}
+, toggleUnderworld : function(playerInstance, portalInstance) {
     if(level.goUnderWorldAnimation) return;
     step = 0
+
     level.underWorld = !level.underWorld
     player.instance.body.gravity.y = 0
     level.goUnderWorldAnimation = true
     level.animationRunning = true
     textService.announce("Going to underworld!")
+    level.goUnderWorldAnimationPos = 0
 
     /*
-    if(!this.underWorld) {
-      this.bkg.filters = null
+    mobsService.killall()
+    lootService.killall()
+    player.killallBullets()
+    */
+
+    level.prepareUnderworldGround()
+
+    level.portals.forEachAlive(function(e){e.kill()})
+    /*
+    if(!level.underWorld) {
+      level.bkg.filters = null
     } else {
-      this.bkg.filters = [this.fireFilter]
+      level.bkg.filters = [level.fireFilter]
     }
     */
   }
 , openPortal : function() {
-  var portalPos = { 'x': game.width - 64, 'y': game.height - 128 }
-  this.portals.create(portalPos.x, portalPos.y, 'portal')
-}
+    if(level.underWorld) return;
+    var portalPos = { 'x': game.width - 64, 'y': game.height - 128 }
+    level.portals.create(portalPos.x, portalPos.y, 'portal')
+  }
 , getGroundFrame : function() {
-    if(this.underWorld) return 1
+    if(level.underWorld) return 1
     return 0
   }
 }

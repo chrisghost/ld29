@@ -10,6 +10,11 @@ var lootService = {
     this.loots = game.add.group()
     this.loots.enableBody = true
   }
+, killall : function() {
+    this.loots.forEachAlive(function(e) {
+      e.kill()
+    })
+  }
 , randomLoot : function() {
     var n = Math.floor(Math.random()*this.possibleLoots.reduce(function(prev, cur){ return prev + cur.lootChance }, 0))
     var i = 0

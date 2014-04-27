@@ -21,6 +21,11 @@ var mobsService = {
   lootService.loot(mob.position)
   destroy(bullet, mob)
 }
+, killall : function() {
+    this.mobs.forEachAlive(function(e) {
+      e.kill()
+    })
+  }
 , update : function(dx) {
     this.mobs.forEachExists(function(e) {
       e.body.position.x -= dx
@@ -32,7 +37,7 @@ var mobsService = {
       mob.jumpCooldown--
       if(mob.jumpCooldown <= 0) {
         mob.jumpCooldown = random.nextInt(150)
-        mob.body.velocity.y -= 200
+        mob.body.velocity.y -= 300
       }
     }
   }
