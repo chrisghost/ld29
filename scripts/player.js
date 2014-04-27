@@ -4,7 +4,7 @@ var player = {
 , jumpKey : null
 , bullets : null
 , fireCoolDown : 0
-, weapon : { name: 'gun', fireCoolDown : 10, nbBullets: 1 }
+, weapon : { name: 'gun', fireCoolDown : 10, nbBullets: 2 }
 , firing : false
 , gold : 0
 , init : function() {
@@ -59,10 +59,16 @@ var player = {
 , fire : function() {
     if(player.fireCoolDown > 0) return;
     player.fireCoolDown = player.weapon.fireCoolDown
-    for(var i = 1; i <= player.weapon.nbBullets; i++) {
+    for(var i = 0; i < player.weapon.nbBullets; i++) {
       bullet = player.bullets.getFirstExists(false)
-      bullet.reset(player.instance.x, player.instance.y+32-i*20)
-      bullet.body.velocity.x = 500
+      if(bullet == null) bullet = player.bullets.create(0, 0, 'bullet')
+      bullet.reset(player.instance.x, player.instance.y)
+
+      if(i!=0) bullet.rotation = (Math.PI/player.weapon.nbBullets)*i-Math.PI/2
+      //bullet.body.rotation = (Math.PI*2/player.weapon.nbBullets)*i
+
+      bullet.body.velocity.x = Math.cos(bullet.rotation)*500
+      bullet.body.velocity.y = Math.sin(bullet.rotation)*500
     }
   }
 , loose : function() {
@@ -74,8 +80,8 @@ var player = {
   }
 , addGold : function(g) {
     player.gold += g
-    if(player.gold >= 1) {
-      player.gold -= 1
+    if(player.gold >= 10) {
+      player.gold -= 10
       level.openPortal()
     }
   }

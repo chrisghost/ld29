@@ -9,7 +9,7 @@ var level = {
 , groundWidth : 800
 , goUnderWorldAnimation : false
 , goUnderWorldAnimationPos : 0
-, goUnderWorldAnimationStepSize : 10
+, goUnderWorldAnimationStepSize : -10
 , underWorldPower : 0
 , initWorld : function() {
     //level.bkg = game.add.sprite(0, 0, 'bkg')
@@ -59,7 +59,7 @@ var level = {
       //console.log("from", e.body.position.x, "-=", dx, "Y = ", e.body.position.y)
       e.body.position.x -= dx
 
-      if(!e.spawnedNext && e.body.position.x < 0) {
+      if(!e.spawnedNext && e.body.position.x < 0 && e.body.position.y > 0) {
         e.spawnedNext = true
         var nx = e.body.position.x + e.body.width
         this.addGround(nx > 0 ? nx : 0, e.body.position.y)
@@ -73,7 +73,7 @@ var level = {
 , goUnderWorldAnimationStep : function(dx) {
 
   level.goUnderWorldAnimationPos += level.goUnderWorldAnimationStepSize
-  if (level.goUnderWorldAnimationPos >= game.height-10) {
+  if (Math.abs(level.goUnderWorldAnimationPos) >= game.height-10) {
     console.log("Landed in underworld!")
     level.goUnderWorldAnimation = false
     level.animationRunning = false
@@ -95,6 +95,9 @@ var level = {
     e.kill()
   })
 }
+, prepareSurfaceGround : function() {
+  level.addGround(0, (-64))
+}
 , prepareUnderworldGround : function() {
   //level.killall()
   level.addGround(0, (game.height*2-64))
@@ -107,14 +110,17 @@ var level = {
     player.instance.body.gravity.y = 0
     level.goUnderWorldAnimation = true
     level.animationRunning = true
-    textService.announce("Going to underworld!")
+    if(level.underWorld) textService.announce("Going to underworld!")
+    else                 textService.announce("Going back to the Surface!")
     level.goUnderWorldAnimationPos = 0
+    level.goUnderWorldAnimationStepSize *= -1
 
     mobsService.killall()
     lootService.killall()
     player.killallBullets()
 
-    level.prepareUnderworldGround()
+    if(level.underWorld) level.prepareUnderworldGround()
+    else                 level.prepareSurfaceGround()
 
     level.portals.forEachAlive(function(e){e.kill()})
     /*
@@ -126,9 +132,8 @@ var level = {
     */
   }
 , openPortal : function() {
-    if(level.underWorld) return;
     var portalPos = { 'x': game.width - 64, 'y': game.height - 128 }
-    level.portals.create(portalPos.x, portalPos.y, 'portal')
+    var nPortal = level.portals.create(portalPos.x, portalPos.y, 'portal')
   }
 , getGroundFrame : function() {
     if(level.underWorld) return 1

@@ -1,10 +1,10 @@
 var lootService = {
   loots : null
 , possibleLoots : [
-    { sprite : 'gold', lootChance: 100, pickUp : function(that) { player.addGold(1) } }
-  , { sprite : 'speed', lootChance: 1, pickUp : function(that) { step += 0.2 } }
-  , { sprite : 'machinegun', lootChance: 1, fireCoolDown : '10', nbBullets: 1, pickUp : function(that) { player.weapon =  that } }
-  , { sprite : 'doublegun', lootChance: 1, fireCoolDown : '20', nbBullets: 2, pickUp : function(that) { player.weapon =  that } }
+    { sprite : 'gold', lootChance: 10, pickUp : function(that) { player.addGold(1) } }
+  , { sprite : 'speed', lootChance: 1, pickUp : function(that) { step += 0.01 } }
+  , { sprite : 'bulletplus', lootChance: 1, pickUp : function(that) { player.weapon.nbBullets += 1 } }
+  , { sprite : 'fastfire', lootChance: 1, pickUp : function(that) { player.weapon.fireCoolDown -= 0.2} }
   ]
 , init : function() {
     this.loots = game.add.group()

@@ -15,7 +15,8 @@ function preload() {
 
   game.load.image('gold', 'assets/gold.png')
   game.load.image('speed', 'assets/speed.png')
-  game.load.image('machinegun', 'assets/machinegun.png')
+  game.load.image('bulletplus', 'assets/machinegun.png')
+  game.load.image('fastfire', 'assets/fastfire.png')
 
   game.load.script('filter', 'scripts/filters/Fire.js')
 }
