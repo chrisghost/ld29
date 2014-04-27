@@ -9,6 +9,7 @@ function preload() {
   game.load.spritesheet('ground', 'assets/ground.png', 800, 64, 2)
   game.load.spritesheet('player', 'assets/player.png', 22, 36, 10)
   game.load.image('bkg', 'assets/bkg.png')
+  game.load.image('bkgMenu', 'assets/bkgMenu.png')
   game.load.image('bkgUnderworld', 'assets/bkgUnderworld.png')
   game.load.image('bullet', 'assets/bullet.png')
   game.load.image('peaceful0', 'assets/peaceful0.png')
@@ -36,21 +37,21 @@ function create() {
   game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(function() {
     if(story.next()) {
       textService.clear()
-      textService.write({x:10, y:0}, "#000000",
+      textService.write({x:10, y:0}, "#FFFFFF",
           story.get()
-        , "49px Monospace"
+        , "49px Arial"
       )
     } else {
       if(gamerunnning == false) launchGame()
     }
   })
   level.fireFilter = game.add.filter('Fire', game.width, game.height)
-  menuBkg = game.add.sprite(0, 0, 'bkg')
+  menuBkg = game.add.sprite(0, 0, 'bkgMenu')
   //menuBkg.filters = [level.fireFilter]
 
-  textService.write({x:10, y:0}, "#000000",
+  textService.write({x:10, y:0}, "#FFFFFF",
       story.get()
-    , "49px Monospace"
+    , "49px Arial"
   )
 
 }

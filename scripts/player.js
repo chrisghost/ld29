@@ -78,6 +78,10 @@ var player = {
   }
 , hit : function(p, mob) {
   player.life -= mob.hitPower
+  player.weapon.nbBullets--
+  if(player.weapon.nbBullets < 1) player.weapon.fireCoolDown = 50
+  player.weapon.fireCoolDown += 10
+  if(player.weapon.fireCoolDown > 50) player.weapon.fireCoolDown = 50
   mob.kill()
   if(player.life <= 0) player.loose()
 }

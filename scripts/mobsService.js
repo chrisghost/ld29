@@ -17,7 +17,7 @@ var mobsService = {
 , createMobsOnNewGround : function(fromX) {
     if(this.bossAlive) return
     var toX = fromX + level.groundWidth
-    for(var x = fromX; x < toX; x += 100-level.underWorldPower/10) {
+    for(var x = fromX; x < toX; x += 100-level.underWorldPower/7) {
       this.createMob(x - Math.floor((Math.random()-0.5)*50), game.height - 128)
     }
   }
@@ -50,7 +50,7 @@ var mobsService = {
   lootService.loot(mob.position)
   destroy(bullet, mob)
   if(level.underWorld) {
-    level.underWorldPower += 10//0.5
+    level.underWorldPower += 0.5
     if(level.underWorldPower >= 100 && !mobsService.bossAlive) {
       mobsService.killall()
       mobsService.spawnBoss()
@@ -58,7 +58,7 @@ var mobsService = {
   }
 }
 , hitBoss : function(bullet, boss) {
-    boss.life-=100
+    boss.life-=5
     destroy(bullet)
     boss.body.velocity.x = 0
     if(boss.life < 0 ) player.win()
@@ -136,8 +136,9 @@ var mobsService = {
       mob.attackCoolDown--
       if(mob.attackCoolDown <= 0) {
         if(mob.type == 'mob1') {
-          mob.attackCoolDown = 500
+          mob.attackCoolDown = 300
           this.launchFireball(mob, mob.body.position.y-mob.body.height/2)
+          if(Math.random() > 0.5 && level.underWorldPower > 50) this.launchFireball(mob, mob.body.position.y-mob.body.height/2)
         }
       }
       if(mob.body.position.x < -100) mob.kill()
