@@ -13,6 +13,7 @@ function preload() {
   game.load.image('peaceful1', 'assets/peaceful1.png')
   game.load.image('mob0', 'assets/mob.png')
   game.load.image('mob1', 'assets/mob1.png')
+  game.load.spritesheet('boss', 'assets/boss.png', 320, 64, 1)
   game.load.image('portal', 'assets/portal.png')
 
   game.load.image('gold', 'assets/gold.png')

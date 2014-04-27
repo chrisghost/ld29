@@ -56,6 +56,7 @@ var level = {
       level.underWorldPower -= dx/300
     }
     if(level.underWorldPower < 0) level.underWorldPower = 0
+    if(level.underWorldPower > 100) level.underWorldPower = 100
   }
 , moveGrounds : function(dx) {
     level.grounds.forEachAlive(function(e) {
@@ -128,6 +129,7 @@ var level = {
     level.goUnderWorldAnimationStepSize *= -1
 
     mobsService.killall()
+    mobsService.bossAlive = false
     lootService.killall()
     player.killallBullets()
 
