@@ -21,7 +21,11 @@ var player = {
     player.bullets.setAll('checkWorldBounds', true)
     player.bullets.setAll('outOfBoundsKill', true)
 
-    player.instance = game.add.sprite(32, game.world.height - 150, 'player')
+
+    player.instance = game.add.sprite(32, game.world.height - 150, 'player');
+    player.instance.animations.add('player');
+    player.instance.animations.play('player', 20, true);
+
     game.physics.arcade.enable(player.instance)
     player.instance.physicsBodyType = Phaser.Physics.ARCADE
     player.instance.body.bounce.y = 0.0

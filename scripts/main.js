@@ -6,7 +6,7 @@ var gamerunnning = false
 
 function preload() {
   game.load.spritesheet('ground', 'assets/ground.png', 800, 64, 2)
-  game.load.image('player', 'assets/player.png')
+  game.load.spritesheet('player', 'assets/player.png', 22, 36, 10)
   game.load.image('bkg', 'assets/bkg.png')
   game.load.image('bullet', 'assets/bullet.png')
   game.load.image('peaceful0', 'assets/peaceful0.png')
@@ -25,6 +25,8 @@ function preload() {
 }
 
 function create() {
+
+
   game.onPause.add(onPause, this)
   game.onResume.add(onResume, this)
   game.physics.startSystem(Phaser.Physics.ARCADE)
