@@ -31,6 +31,8 @@ var mobsService = {
   }
   var mob = this.mobs.create(x, y, type)
 
+  mob.isJumper = false
+  if(type != 'mob2' && type != 'peaceful1') mob.isJumper = true
   mob.jumpCooldown = random.nextInt(150)
   mob.type = type
   mob.body.bounce.y = 0.0
@@ -122,7 +124,7 @@ var mobsService = {
       }
     } else {
       mob.body.position.x -= dx
-      if(mob.body.touching.down && mob.type != 'mob2') {
+      if(mob.body.touching.down && mob.isJumper) {
         mob.jumpCooldown--
         if(mob.jumpCooldown <= 0) {
           mob.jumpCooldown = random.nextInt(150)
@@ -135,9 +137,7 @@ var mobsService = {
       if(mob.attackCoolDown <= 0) {
         if(mob.type == 'mob1') {
           mob.attackCoolDown = 500
-          for(var i = mob.body.position.y; i < mob.body.position.y+mob.body.height; i += 40) {
-            this.launchFireball(mob, i)
-          }
+          this.launchFireball(mob, mob.body.position.y-mob.body.height/2)
         }
       }
       if(mob.body.position.x < -100) mob.kill()
