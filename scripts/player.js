@@ -4,7 +4,7 @@ var player = {
 , jumpKey : null
 , bullets : null
 , fireCoolDown : 0
-, weapon : { name: 'gun', fireCoolDown : 50, nbBullets: 2 }
+, weapon : { name: 'gun', fireCoolDown : 40, nbBullets: 2 }
 , firing : false
 , gold : 0
 , life : 100
