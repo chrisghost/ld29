@@ -50,7 +50,7 @@ var mobsService = {
   lootService.loot(mob.position)
   destroy(bullet, mob)
   if(level.underWorld) {
-    level.underWorldPower += 0.5
+    level.underWorldPower += 5//0.5
     if(level.underWorldPower >= 100 && !mobsService.bossAlive) {
       mobsService.killall()
       mobsService.spawnBoss()

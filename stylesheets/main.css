@@ -1,0 +1,22 @@
+body {
+}
+
+#stats {
+  position: absolute;
+  width: 800px;
+  background-color: grey;
+}
+.statsBar {
+  height:20px;
+  text-align:center;
+}
+.statsBarContainer {
+  height:20px;
+  width:90%;
+  background-color:black;
+}
+.statsColumn {
+  width: 400px;
+  float: left;
+  color: #DDD;
+}

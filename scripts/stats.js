@@ -7,14 +7,18 @@ var stats = {
 }
 , displayDashboard : function() {
     var uwP = Math.floor(level.underWorldPower)
-    var str = "Gold: " + player.gold
-            + "<br />Life <div style='height:20px;width:100%;background-color:red'>"
-            + " <div style='height:20px;width:"+player.life+"%;background-color:green;text-align:center'>"+player.life+"%</div>"
+    var str = "<div class='statsColumn'>"
+            + "<div class='statsBarContainer'>"
+            + "  <div class='statsBar' style='width:"+player.gold*20+"%;background-color:#969623'>Gold&nbsp;:&nbsp;"+player.gold+"&nbsp;(5&nbsp;to&nbsp;open&nbsp;a&nbsp;portal)</div>"
             + "</div>"
-            + "UnderWorld Power <div style='height:20px;width:100%;background-color:black'>"
-            + " <div style='height:20px;width:"+uwP+"%;background-color:violet;text-align:center'>"+uwP+"%</div>"
+            + "<div class='statsBarContainer' style='background-color:red'>"
+            + "  <div class='statsBar' style='width:"+player.life+"%;background-color:green'>Life&nbsp;:&nbsp;"+player.life+"%</div>"
+            + "</div></div>"
+            + "<div class='statsColumn'><div class='statsBarContainer'>"
+            + "  <div class='statsBar' style='width:"+uwP+"%;background-color:violet;'>UnderWorld&nbsp;Power&nbsp;"+uwP+"%</div>"
             + "</div>"
-    if(mobsService.bossAlive) str += "Boos Life <div style='height:20px;width:100%;background-color:black'>"+ " <div style='height:20px;width:"+mobsService.boss.life+"%;background-color:orange;text-align:center'>"+mobsService.boss.life+"</div>"+ "</div>"
+    if(mobsService.bossAlive) str += "<div class='statsBarContainer'>"+ "<div class='statsBar' style='width:"+mobsService.boss.life+"%;background-color:orange;'>Boss&nbsp;Life:&nbsp;"+mobsService.boss.life+"</div>"+ "</div>"
+    str += "</div>"
     this.elem.innerHTML = str
   }
 

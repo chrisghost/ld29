@@ -1,5 +1,5 @@
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game', { preload: preload, create: create, update: update})
-var meter = new FPSMeter()
+//var meter = new FPSMeter()
 var baseStep = 0.25
 var step = 0.25
 var gamerunnning = false
@@ -70,7 +70,7 @@ function launchGame() {
 var textTimer = 0
 var lastTime = Date.now()
 function update(t) {
-  meter.tick()
+  //meter.tick()
 
   var d = Date.now()
   var delta = d - lastTime
