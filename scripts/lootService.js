@@ -6,6 +6,7 @@ var lootService = {
   , { sprite : 'bulletplus',  lootChance: 0,  lootChanceUnderworld: 1,  pickUp : function(that) { player.weapon.nbBullets += 1} }
   , { sprite : 'fastfire',    lootChance: 0,  lootChanceUnderworld: 1,  pickUp : function(that) { player.weapon.fireCoolDown -= 0.2 } }
   , { sprite : 'health',      lootChance: 20, lootChanceUnderworld: 0,  pickUp : function(that) { player.life = (player.life + 20 > player.maxLife) ? player.maxLife : player.life + 5 } }
+  , { sprite : 'bonus0',      lootChance: 0,  lootChanceUnderworld: 1,  pickUp : function(that) { player._fire({ nbBullets: 30 }) } }
   , { sprite : '',            lootChance: 1,  lootChanceUnderworld: 5,  pickUp : function(that) { } }
   ]
 , init : function() {

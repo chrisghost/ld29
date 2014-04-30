@@ -26,6 +26,7 @@ function preload() {
   game.load.image('fastfire', 'assets/fastfire.png')
   game.load.image('health', 'assets/health.png')
   game.load.image('fireball', 'assets/fireball.png')
+  game.load.image('bonus0', 'assets/bonus0.png')
 
   game.load.script('filter', 'scripts/filters/Fire.js')
 }

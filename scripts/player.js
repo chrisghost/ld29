@@ -63,12 +63,15 @@ var player = {
 , fire : function() {
     if(player.fireCoolDown > 0) return;
     player.fireCoolDown = player.weapon.fireCoolDown
-    for(var i = 0; i < player.weapon.nbBullets; i++) {
+    this._fire(player.weapon)
+  }
+, _fire : function(weapon) {
+    for(var i = 0; i < weapon.nbBullets; i++) {
       bullet = player.bullets.getFirstExists(false)
       if(bullet == null) bullet = player.bullets.create(0, 0, 'bullet')
       bullet.reset(player.instance.x, player.instance.y)
 
-      if(i!=0) bullet.rotation = (Math.PI/player.weapon.nbBullets)*i-Math.PI/2
+      if(i!=0) bullet.rotation = (Math.PI/weapon.nbBullets)*i-Math.PI/2
       //bullet.body.rotation = (Math.PI*2/player.weapon.nbBullets)*i
 
       bullet.body.velocity.x = Math.cos(bullet.rotation)*500
@@ -85,6 +88,7 @@ var player = {
   if(player.life <= 0) player.loose()
 }
 , win : function() {
+    stats.displayDashboard()
     stats.finish()
     mobsService.killall()
     var finishTxt = "You won in "+moment(stats.time).format('m')+" min. "+moment(stats.time).format('s')+" sec."
@@ -92,6 +96,7 @@ var player = {
     gamerunnning = false
   }
 , loose : function() {
+    stats.displayDashboard()
     stats.finish()
     var finishTxt = "You lost in "+moment(stats.time).format('m')+" min. "+moment(stats.time).format('s')+" sec."
     textService.announce(finishTxt, false)
