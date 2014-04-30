@@ -52,6 +52,7 @@ function declareInputs() {
 }
  
 function create() {
+  document.getElementById("loaderMessage").remove()
   declareInputs()
   game.onPause.add(onPause, this)
   game.onResume.add(onResume, this)
