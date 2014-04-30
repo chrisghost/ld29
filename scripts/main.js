@@ -29,11 +29,8 @@ function preload() {
 
   game.load.script('filter', 'scripts/filters/Fire.js')
 }
+function declareInputs() {
 
-function create() {
-  game.onPause.add(onPause, this)
-  game.onResume.add(onResume, this)
-  game.physics.startSystem(Phaser.Physics.ARCADE)
   game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(function() {
     if(story.next()) {
       textService.clear()
@@ -45,6 +42,20 @@ function create() {
       if(gamerunnning == false) launchGame()
     }
   })
+  player.jumpKey = game.input.keyboard.addKey(Phaser.Keyboard.D)
+  player.fireKey = game.input.keyboard.addKey(Phaser.Keyboard.S)
+
+  player.jumpKey.onDown.add(player.jump, player)
+  player.fireKey.onDown.add(function(){player.firing = true}, player)
+  player.fireKey.onUp.add(function(){player.firing = false}, player)
+
+}
+ 
+function create() {
+  declareInputs()
+  game.onPause.add(onPause, this)
+  game.onResume.add(onResume, this)
+  game.physics.startSystem(Phaser.Physics.ARCADE)
   level.fireFilter = game.add.filter('Fire', game.width, game.height)
   menuBkg = game.add.sprite(0, 0, 'bkgMenu')
   //menuBkg.filters = [level.fireFilter]
@@ -112,6 +123,7 @@ function onPause() {
 }
 
 function onResume() {
+  declareInputs()
   //lastTime = Date.now()
 }
 
