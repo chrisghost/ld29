@@ -10,9 +10,6 @@ var player = {
 , life : 100
 , maxLife : 100
 , init : function() {
-    player.jumpKey = game.input.keyboard.addKey(Phaser.Keyboard.D)
-    player.fireKey = game.input.keyboard.addKey(Phaser.Keyboard.S)
-
     player.bullets = game.add.group()
     player.bullets.enableBody = true
     player.bullets.physicsBodyType = Phaser.Physics.ARCADE
@@ -29,10 +26,6 @@ var player = {
     player.instance.body.bounce.y = 0.0
     player.instance.body.collideWorldBounds = true
     player.resetGravity()
-
-    player.jumpKey.onDown.add(player.jump, player)
-    player.fireKey.onDown.add(function(){player.firing = true}, player)
-    player.fireKey.onUp.add(function(){player.firing = false}, player)
 
     player.gold = 0
   }
