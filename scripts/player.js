@@ -4,12 +4,20 @@ var player = {
 , jumpKey : null
 , bullets : null
 , fireCoolDown : 0
-, weapon : { name: 'gun', fireCoolDown : 40, nbBullets: 2 }
+, weapon : {}
 , firing : false
 , gold : 0
 , life : 100
 , maxLife : 100
+, loose : false
+, win : false
 , init : function() {
+    this.win = false
+    this.loose = false
+    this.life = this.maxLife
+    this.gold = 0
+    this.weapon = { name: 'gun', fireCoolDown : 40, nbBullets: 2 }
+
     player.bullets = game.add.group()
     player.bullets.enableBody = true
     player.bullets.physicsBodyType = Phaser.Physics.ARCADE
@@ -69,26 +77,13 @@ var player = {
     }
   }
 , hit : function(p, mob) {
-  player.life -= mob.hitPower
-  player.weapon.nbBullets--
-  if(player.weapon.nbBullets < 1) player.weapon.nbBullets = 1
-  player.weapon.fireCoolDown += 10
-  if(player.weapon.fireCoolDown > 50) player.weapon.fireCoolDown = 50
-  mob.kill()
-  if(player.life <= 0) player.loose()
-}
-, win : function() {
-    stats.finish()
-    mobsService.killall()
-    var finishTxt = "You won in "+moment(stats.time).format('m')+" min. "+moment(stats.time).format('s')+" sec."
-    textService.announce(finishTxt, false)
-    gamerunnning = false
-  }
-, loose : function() {
-    stats.finish()
-    var finishTxt = "You lost in "+moment(stats.time).format('m')+" min. "+moment(stats.time).format('s')+" sec."
-    textService.announce(finishTxt, false)
-    gamerunnning = false
+    player.life -= mob.hitPower
+    player.weapon.nbBullets--
+    if(player.weapon.nbBullets < 1) player.weapon.nbBullets = 1
+      player.weapon.fireCoolDown += 10
+    if(player.weapon.fireCoolDown > 50) player.weapon.fireCoolDown = 50
+      mob.kill()
+    if(player.life <= 0) player.loose = true
   }
 , addGold : function(g) {
     player.gold += g

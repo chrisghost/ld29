@@ -13,6 +13,13 @@ var level = {
 , goUnderWorldAnimationStepSize : -10
 , underWorldPower : 0
 , initWorld : function() {
+
+    level.underWorld = false
+    level.goUnderWorldAnimation = false
+    level.goUnderWorldAnimationPos = 0
+    level.goUnderWorldAnimationStepSize = -10
+    level.underWorldPower = 0
+
     level.bkg = game.add.sprite(0, 0, 'bkg')
     level.bkgUnderworld = game.add.sprite(0, game.height, 'bkgUnderworld')
 
@@ -50,7 +57,7 @@ var level = {
     level.moveGrounds(dx)
 
     if(level.underWorld) {
-       level.fireFilter.update()
+       //level.fireFilter.update()
       level.underWorldPower -= dx/1000
     } else {
       level.underWorldPower -= dx/300
