@@ -9,7 +9,9 @@ var menuState = {
     })
 
   }
-, update:  function() {}
+, update:  function() {
+    meter.tick()
+  }
 , onResume : function() {
     this.declareInputs()
   }

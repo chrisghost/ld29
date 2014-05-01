@@ -18,6 +18,7 @@ var mobsService = {
     if(this.bossAlive) return
     var toX = fromX + level.groundWidth
     for(var x = fromX; x < toX; x += 100-level.underWorldPower/7) {
+      console.log('mobcreation')
       this.createMob(x - Math.floor((Math.random()-0.5)*50), game.height - 128)
     }
   }
@@ -29,8 +30,7 @@ var mobsService = {
           n > 3 ? 2 : 0
     type = 'mob'+n
   }
-  var mob = this.mobs.getFirstDead()
-  if(mob == null) mob = this.mobs.create(x, y, type)
+  var mob = this.mobs.create(x, y, type)
 
   mob.isJumper = false
   if(type != 'mob2' && type != 'peaceful1') mob.isJumper = true

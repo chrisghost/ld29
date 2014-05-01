@@ -1,7 +1,19 @@
 body {
   font-family : sans-serif;
+  background: #000;
+  color: #fff;
+  text-align: center;
+}
+a {
+  color: white;
+}
+.main {
+  display: inline-block;
 }
 
+footer {
+  margin-top: 20px;
+}
 #stats {
   position: absolute;
   width: 800px;
