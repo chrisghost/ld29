@@ -61,7 +61,7 @@ var mobsService = {
     boss.life-=5
     destroy(bullet)
     boss.body.velocity.x = 0
-    if(boss.life < 0 ) player.win()
+    if(boss.life < 0 ) player.win = true
   }
 , killall : function() {
     this.mobs.forEachAlive(function(e) {

@@ -1,8 +1,9 @@
 var textService = {
   texts : []
-, announce : function(text, destroy) {
+, announce : function(text, destroy, pos) {
+    var textPos = pos || {x:50, y:game.height/2}
     var des = (typeof destroy == 'undefined') ? true : destroy
-    var t = this.write({x:50, y:game.height/2}, 'white', text, "50px Arial")
+    var t = this.write(textPos, 'white', text, "50px Arial")
     if(des) setTimeout(function(){t.destroy()}, 1000)
   }
 , title : function(text) {
