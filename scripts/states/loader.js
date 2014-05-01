@@ -4,12 +4,12 @@ var loaderState = {
 , ready : false
 , preload: function () {
 
-    this.background = game.add.sprite(0, 0, 'preloaderBackground')
-    this.preloadBar = game.add.sprite(200, 400, 'preloaderBar')
+    this.background = game.add.sprite(0, 0, 'splashscreen')
+    game.add.sprite(200, 400, 'preloaderBackground')
+    this.preloadBar = game.add.sprite(206, 406, 'preloaderBar')
 
     game.load.setPreloadSprite(this.preloadBar)
 
-    game.load.image('bkgMenu', 'assets/bkgMenu.png')
     game.load.image('bkgMenu', 'assets/bkgMenu.png')
     game.load.spritesheet('ground', 'assets/ground.png', 800, 64, 2)
     game.load.spritesheet('player', 'assets/player.png', 22, 36, 10)
