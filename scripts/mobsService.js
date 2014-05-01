@@ -29,7 +29,8 @@ var mobsService = {
           n > 3 ? 2 : 0
     type = 'mob'+n
   }
-  var mob = this.mobs.create(x, y, type)
+  var mob = this.mobs.getFirstDead()
+  if(mob == null) mob = this.mobs.create(x, y, type)
 
   mob.isJumper = false
   if(type != 'mob2' && type != 'peaceful1') mob.isJumper = true
@@ -48,7 +49,8 @@ var mobsService = {
   if(mob.isBoss) return mobsService.hitBoss(bullet, mob)
 
   lootService.loot(mob.position)
-  destroy(bullet, mob)
+  bullet.kill()
+  mob.kill()
   if(level.underWorld) {
     level.underWorldPower += 0.5
     if(level.underWorldPower >= 100 && !mobsService.bossAlive) {
