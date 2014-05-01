@@ -5,11 +5,13 @@ var step = 0.25
 window.onload =  function() {
   game = new Phaser.Game(800, 600, Phaser.AUTO, 'gamediv')
 
+  game.state.add('boot', bootState)
+  game.state.add('loader', loaderState)
   game.state.add('menu', menuState)
   game.state.add('game', gameState)
   game.state.add('gameover', gameoverState)
 
-  game.state.start('menu')
+  game.state.start('boot')
 }
 
 // Utility to destroy an object
